@@ -1,0 +1,76 @@
+import { RouteObject } from "react-router";
+import { UserRole } from "../common/enums/user-role.enum";
+import { ApplicantProfile } from "../components/ApplicantProfile";
+import { CompanyPostings } from "../components/CompanyPostings";
+import { CompanyProfile } from "../components/CompanyProfile/CompanyProfile";
+import { Home } from "../components/Home";
+import { JobPosting } from "../components/JobPosting";
+import { JobPostings } from "../components/JobPostings";
+import { Login } from "../components/Login";
+import { ProtectedRoutes } from "../components/ProtectedRoutes";
+import { Register } from "../components/Register";
+import { JobApplicants } from "../components/JobApplicants";
+
+export const routes: RouteObject[] = [
+	{
+		path: "",
+		element: <Home />,
+	},
+	{
+		path: "register",
+		element: <Register />,
+	},
+	{
+		path: "login",
+		element: <Login />,
+	},
+	{
+		path: "profile/applicant",
+		element: (
+			<ProtectedRoutes
+				allowedRoles={[UserRole.APPLICANT]}
+				element={<ApplicantProfile />}
+			/>
+		),
+	},
+	{
+		path: "profile/company",
+		element: (
+			<ProtectedRoutes
+				allowedRoles={[UserRole.COMPANY]}
+				element={<CompanyProfile />}
+			/>
+		),
+	},
+	{
+		path: "job-posting",
+		element: (
+			<ProtectedRoutes
+				allowedRoles={[UserRole.COMPANY]}
+				element={<JobPosting />}
+			/>
+		),
+	},
+	{
+		path: "browse",
+		element: <JobPostings />,
+	},
+	{
+		path: "job-posting/company",
+		element: (
+			<ProtectedRoutes
+				allowedRoles={[UserRole.COMPANY]}
+				element={<CompanyPostings />}
+			/>
+		),
+	},
+	{
+		path: "job-applicants",
+		element: (
+			<ProtectedRoutes
+				allowedRoles={[UserRole.COMPANY]}
+				element={<JobApplicants />}
+			/>
+		),
+	},
+];
