@@ -1,5 +1,6 @@
 import { Navigate } from "react-router";
 import { useAuth } from "../providers/AuthProvider";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 interface ProtectedRoutesProps {
 	element: React.ReactNode;
@@ -12,7 +13,11 @@ export const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
 }) => {
 	const { user, loading } = useAuth();
 	if (loading) {
-		return <div>Loading...</div>;
+		return (
+			<Backdrop open={loading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
+		);
 	}
 
 	if (!user) {

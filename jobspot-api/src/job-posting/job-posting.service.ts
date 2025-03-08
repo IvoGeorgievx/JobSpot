@@ -8,7 +8,7 @@ import {
   JobPostingDto,
   PaginatedJobPostingResponseDto,
 } from './dto/job-posting.dto';
-import { JobPosting } from '@prisma/client';
+import { JobField, JobPosting } from '@prisma/client';
 
 @Injectable()
 export class JobPostingService {
@@ -64,20 +64,20 @@ export class JobPostingService {
   async getJobPostings(
     page: number,
     pageSize: number,
-    field?: string,
+    field?: JobField,
     salaryMin?: number,
     salaryMax?: number,
   ): Promise<PaginatedJobPostingResponseDto> {
     const skip = (page - 1) * pageSize;
 
     const where: {
-      field?: string;
-      salaryMin?: number;
-      salaryMax?: number;
+      field?: JobField;
+      salaryMin?: { gte: number };
+      salaryMax?: { lte: number };
     } = {
       ...(field && { field }),
-      ...(salaryMin && { salaryMin }),
-      ...(salaryMax && { salaryMax }),
+      ...(salaryMin && { salaryMin: { gte: salaryMin } }),
+      ...(salaryMax && { salaryMax: { lte: salaryMax } }),
     };
 
     const [jobPostings, total] = await Promise.all([

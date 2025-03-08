@@ -15,6 +15,8 @@ import { useApplyJob } from "../hooks/mutations/useApplyJob";
 import { useGetIfApplicantApplied } from "../hooks/queries/useGetJobApplicants";
 import { useAuth } from "../providers/AuthProvider";
 import { JobPosting } from "../types/job-type";
+import { useGetUserProfile } from "../hooks/queries/useGetUserProfile";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 
 interface JobPostingDrawer extends Omit<DrawerProps, "children"> {
 	jobPosting: JobPosting;
@@ -32,6 +34,14 @@ export const JobPostingDrawer: React.FC<JobPostingDrawer> = ({
 		jobPosting.id
 	);
 
+	const { data: profile } = useGetUserProfile();
+
+	let applicantHaveCv;
+
+	if (profile && "cvUrl" in profile && profile.cvUrl) {
+		applicantHaveCv = profile.cvUrl;
+	}
+
 	const handleApply = () => {
 		if (!user?.id || !jobPosting.id) {
 			return;
@@ -47,7 +57,7 @@ export const JobPostingDrawer: React.FC<JobPostingDrawer> = ({
 			sx={{ padding: "16px" }}
 			PaperProps={{
 				sx: {
-					width: "50%",
+					width: { xs: "100%", md: "50%" },
 					backgroundColor: "#0F1419",
 					padding: "16px",
 				},
@@ -87,12 +97,14 @@ export const JobPostingDrawer: React.FC<JobPostingDrawer> = ({
 				<Typography variant="h5">Responsibilities:</Typography>
 				<Typography variant="body2">{jobPosting.responsibilities}</Typography>
 				<Typography variant="h5">Salary Range:</Typography>
-				<Typography variant="body2">
-					{jobPosting.salaryMin} - {jobPosting.salaryMax} BGN
-				</Typography>
+				{jobPosting.salaryMin && jobPosting.salaryMax && (
+					<Typography variant="body2">
+						{jobPosting.salaryMin} - {jobPosting.salaryMax} BGN
+					</Typography>
+				)}
 				<Divider />
 				{user?.role === UserRole.APPLICANT &&
-					(!hasApplied && !isLoading ? (
+					(!hasApplied && !isLoading && applicantHaveCv ? (
 						<Button
 							onClick={handleApply}
 							disabled={isSuccess}
@@ -102,6 +114,16 @@ export const JobPostingDrawer: React.FC<JobPostingDrawer> = ({
 							startIcon={<ApprovalIcon />}
 						>
 							Apply for this job.
+						</Button>
+					) : !applicantHaveCv ? (
+						<Button
+							disabled={true}
+							sx={{ mt: 4 }}
+							variant="contained"
+							color="info"
+							startIcon={<DoDisturbIcon />}
+						>
+							You must have CV to apply for a job
 						</Button>
 					) : (
 						<Button

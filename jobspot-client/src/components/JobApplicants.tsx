@@ -46,45 +46,51 @@ export const JobApplicants: React.FC<JobApplicantsProps> = ({
 				<Typography variant="h3" textAlign="center" color="textDisabled">
 					{jobPosting.title}
 				</Typography>
-				<Stack direction="column" spacing={2} mt={2}>
-					{applicantsToRender.map((applicant: Applicant, index: number) => (
-						<>
-							<Stack
-								key={applicant.id}
-								direction="row"
-								spacing={1}
-								sx={{
-									border: "1px solid #38444D",
-									borderRadius: "16px",
-									padding: "16px",
-								}}
-							>
-								<Stack flex={1}>{applicant.fullName}</Stack>
-								{applicant.cvUrl ? (
-									<Button
-										onClick={() => handleOpenDialog(index)}
-										variant="contained"
-										sx={{ flex: 1 }}
-									>
-										View Applicant CV
-									</Button>
-								) : (
-									<Typography>Applicant have no CV attached.</Typography>
-								)}
-							</Stack>
-							<Dialog
-								open={dialogOpen[index] || false}
-								onClose={() => handleDialogClose(index)}
-								maxWidth="md"
-								fullWidth
-							>
-								<DialogContent>
-									{applicant.cvUrl && <Viewer fileUrl={applicant.cvUrl} />}
-								</DialogContent>
-							</Dialog>
-						</>
-					))}
-				</Stack>
+				{applicantsToRender && applicantsToRender.length ? (
+					<Stack direction="column" spacing={2} mt={2}>
+						{applicantsToRender.map((applicant: Applicant, index: number) => (
+							<>
+								<Stack
+									key={applicant.id}
+									direction="row"
+									spacing={1}
+									sx={{
+										border: "1px solid #38444D",
+										borderRadius: "16px",
+										padding: "16px",
+									}}
+								>
+									<Stack flex={1}>{applicant.fullName}</Stack>
+									{applicant.cvUrl ? (
+										<Button
+											onClick={() => handleOpenDialog(index)}
+											variant="contained"
+											sx={{ flex: 1 }}
+										>
+											View Applicant CV
+										</Button>
+									) : (
+										<Typography>Applicant have no CV attached.</Typography>
+									)}
+								</Stack>
+								<Dialog
+									open={dialogOpen[index] || false}
+									onClose={() => handleDialogClose(index)}
+									maxWidth="md"
+									fullWidth
+								>
+									<DialogContent>
+										{applicant.cvUrl && <Viewer fileUrl={applicant.cvUrl} />}
+									</DialogContent>
+								</Dialog>
+							</>
+						))}
+					</Stack>
+				) : (
+					<Typography mt={4} variant="h5" textAlign="center">
+						No Applicants for this job
+					</Typography>
+				)}
 			</Container>
 		</Worker>
 	);

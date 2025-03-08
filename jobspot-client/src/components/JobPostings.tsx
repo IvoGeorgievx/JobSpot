@@ -1,6 +1,10 @@
 import {
 	Container,
+	FormControl,
+	InputLabel,
+	MenuItem,
 	Pagination,
+	Select,
 	Skeleton,
 	Stack,
 	TextField,
@@ -9,13 +13,16 @@ import {
 import { debounce } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useGetJobPostings } from "../hooks/queries/useGetJobPostings";
+import { JobField, jobFieldMap } from "../types/job-field-type";
 import { JobPosting } from "../types/job-type";
 import { JobPostingDrawer } from "./JobPostingDrawer";
 import { SingleJobPosting } from "./SingleJobPosting";
 
+import { SelectChangeEvent } from "@mui/material";
+
 export const JobPostings = () => {
 	const [page, setPage] = useState(1);
-	const pageSize = 2;
+	const pageSize = 3;
 	const [filters, setFilters] = useState({
 		field: "",
 		salaryMin: 0,
@@ -40,11 +47,17 @@ export const JobPostings = () => {
 		return data?.data?.find((job) => job.id === id);
 	};
 
-	const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
+	const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFilters((prevFilters) => ({
 			...prevFilters,
-			[name]: name === "field" ? value : Number(value),
+			[e.target.name]: e.target.value,
+		}));
+	};
+
+	const handleFieldChange = (e: SelectChangeEvent<string>) => {
+		setFilters((prevFilters) => ({
+			...prevFilters,
+			field: e.target.value,
 		}));
 	};
 
@@ -73,28 +86,51 @@ export const JobPostings = () => {
 				justifyContent="center"
 				alignItems="center"
 				direction={{ xs: "column", md: "row" }}
+				my={2}
 				gap={2}
 			>
 				<Typography flex={1} variant="h5">
 					Filters
 				</Typography>
-				<TextField name="field" fullWidth onChange={handleFilterChange} />
+				<FormControl fullWidth>
+					<InputLabel id="job-field">Job Type</InputLabel>
+					<Select
+						labelId="job-field"
+						id="job-field"
+						label="Job Field"
+						value={filters.field}
+						onChange={handleFieldChange}
+					>
+						<MenuItem value={""}>All</MenuItem>
+						{Object.values(JobField).map((field) => (
+							<MenuItem key={field} value={field}>
+								{jobFieldMap[field]}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
 				<TextField
 					name="salaryMin"
 					type="number"
+					label="Minimum Salary"
 					fullWidth
-					onChange={handleFilterChange}
+					onChange={handleSalaryChange}
 				/>
 				<TextField
 					name="salaryMax"
 					type="number"
+					label="Maximum Salary"
 					fullWidth
-					onChange={handleFilterChange}
+					onChange={handleSalaryChange}
 				/>
 			</Stack>
-			<Stack gap={1} my={1}>
+			<Stack gap={1} my={1} minHeight="430px">
 				{isLoading ? (
-					<Skeleton animation="wave" />
+					<>
+						<Skeleton animation="wave" height="105px" />
+						<Skeleton animation="wave" height="105px" />
+						<Skeleton animation="wave" height="105px" />
+					</>
 				) : (
 					jobPostings &&
 					jobPostings.length &&

@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
-import { JobPosting } from '@prisma/client';
+import { JobField, JobPosting } from '@prisma/client';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { RoleGuard } from 'src/common/guards/role.guard';
 import { Roles } from 'src/common/guards/roles.decorator';
@@ -45,7 +45,7 @@ export class JobPostingController {
   getJobPostings(
     @Query('page', ParseIntPipe) page: number = 1,
     @Query('pageSize', ParseIntPipe) pageSize: number = 5,
-    @Query('field') field?: string,
+    @Query('field') field?: JobField,
     @Query('salaryMin', new ParseIntPipe({ optional: true }))
     salaryMin?: number,
     @Query('salaryMax', new ParseIntPipe({ optional: true }))

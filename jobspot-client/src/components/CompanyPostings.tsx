@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useGetJobPostings } from "../hooks/queries/useGetJobPostings";
 import { JobPosting, jobTypeMap } from "../types/job-type";
 import { CompanyPostingDetails } from "./CompanyPostingDetails";
+import { jobFieldMap } from "../types/job-field-type";
 
 export const CompanyPostings = () => {
 	const count = useMotionValue(0);
@@ -52,7 +53,7 @@ export const CompanyPostings = () => {
 								{rounded}
 							</motion.pre>
 						</Typography>
-						<Stack my={2} gap={2}>
+						<Stack my={2} gap={2} minHeight="450px">
 							{jobPostings?.map((jobPosting) => (
 								<Box
 									key={jobPosting.id}
@@ -84,7 +85,7 @@ export const CompanyPostings = () => {
 													fontSize: "14px",
 												}}
 											>
-												{jobPosting.field}
+												{jobFieldMap[jobPosting.field]}
 											</Typography>
 											<Typography
 												variant="body1"
@@ -97,7 +98,6 @@ export const CompanyPostings = () => {
 												{jobTypeMap[jobPosting.jobType]}
 											</Typography>
 										</Stack>
-										<Stack>test</Stack>
 									</Stack>
 								</Box>
 							))}

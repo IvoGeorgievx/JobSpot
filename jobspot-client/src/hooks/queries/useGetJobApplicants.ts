@@ -2,6 +2,8 @@ import axios from "axios";
 import { API_URL } from "../../common/constants/api";
 import { useQuery } from "@tanstack/react-query";
 import { Applicant } from "../../types/applicant-type";
+import { useAuth } from "../../providers/AuthProvider";
+import { UserRole } from "../../common/enums/user-role.enum";
 
 const queryFn = async (jobPostingId: string) => {
 	const token = localStorage.getItem("token");
@@ -35,9 +37,12 @@ const applicantAppliedForJob = async (jobPostingId: string) => {
 };
 
 export const useGetIfApplicantApplied = (jobId: string) => {
+	const { user } = useAuth();
+	const isApplicant = user?.role === UserRole.APPLICANT;
 	return useQuery({
 		queryKey: ["applied-job", jobId],
 		queryFn: () => applicantAppliedForJob(jobId),
+		enabled: isApplicant,
 	});
 };
 

@@ -20,41 +20,42 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useJobPosting } from "../hooks/mutations/useCreateJobPosting";
 import { useGetSingleJobPosting } from "../hooks/queries/useGetJobPostings";
-import { JobPosting, JobType } from "../types/job-type";
+import { JobPosting, JobType, jobTypeMap } from "../types/job-type";
 import { useGetJobApplicants } from "../hooks/queries/useGetJobApplicants";
 import { Link } from "react-router";
+import { JobField, jobFieldMap } from "../types/job-field-type";
 
 interface FormData {
 	title?: string;
 	description?: string;
-	field?: string;
+	field?: JobField;
 	jobType?: JobType;
 	requirements?: string;
 	responsibilities?: string;
-	salaryMin?: string;
-	salaryMax?: string;
+	salaryMin?: number;
+	salaryMax?: number;
 }
 
 const schema = yup.object({
 	title: yup.string(),
 	description: yup.string(),
-	field: yup.string(),
+	field: yup.mixed<JobField>().oneOf(Object.values(JobField)),
 	jobType: yup.mixed<JobType>().oneOf(Object.values(JobType)),
 	requirements: yup.string(),
 	responsibilities: yup.string(),
-	salaryMin: yup.string(),
-	salaryMax: yup.string(),
+	salaryMin: yup.number(),
+	salaryMax: yup.number(),
 });
 
 const defaultValues: FormData = {
 	title: "",
 	description: "",
-	field: "",
+	field: JobField.INFORMATION_TECHNOLOGY,
 	jobType: JobType.FULL_TIME,
 	requirements: "",
 	responsibilities: "",
-	salaryMin: "",
-	salaryMax: "",
+	salaryMin: 0,
+	salaryMax: 0,
 };
 
 export const CompanyPostingDetails = ({
@@ -172,7 +173,7 @@ export const CompanyPostingDetails = ({
 											}}
 											color="success"
 										>
-											{data?.field}
+											{data?.field ? jobFieldMap[data.field] : ""}
 										</Typography>
 									</Stack>
 									<Divider />
@@ -226,7 +227,7 @@ export const CompanyPostingDetails = ({
 											}}
 											color="success"
 										>
-											{data?.jobType}
+											{data?.jobType ? jobTypeMap[data.jobType] : ""}
 										</Typography>
 									</Stack>
 									<Divider />
@@ -330,7 +331,16 @@ export const CompanyPostingDetails = ({
 												>
 													Max Salary Range:
 												</Typography>
-												<Typography variant="h6" color="success">
+												<Typography
+													variant="h6"
+													color="success"
+													sx={{
+														fontSize: {
+															xs: "14px",
+															md: "20px",
+														},
+													}}
+												>
 													{data?.salaryMin}
 												</Typography>
 											</Stack>
@@ -381,14 +391,22 @@ export const CompanyPostingDetails = ({
 								{...register("title")}
 								slotProps={{ inputLabel: { shrink: true } }}
 							/>
-							<TextField
-								disabled={disableFields}
-								id="field"
-								label="Field"
-								variant="standard"
-								{...register("field")}
-								slotProps={{ inputLabel: { shrink: true } }}
-							/>
+							<FormControl variant="standard" fullWidth>
+								<InputLabel id="job-field">Job Type</InputLabel>
+								<Select
+									{...register("field")}
+									labelId="job-field"
+									id="job-field"
+									label="Job Field"
+									defaultValue={data?.field}
+								>
+									{Object.values(JobField).map((field) => (
+										<MenuItem key={field} value={field}>
+											{jobFieldMap[field]}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
 							<TextField
 								id="description"
 								label="Description"

@@ -1,3 +1,5 @@
+import { JobField } from "./job-field-type";
+
 export enum JobType {
 	FULL_TIME = "FULL_TIME",
 	PART_TIME = "PART_TIME",
@@ -11,7 +13,7 @@ export interface JobPosting {
 	id: string;
 	title: string;
 	description: string;
-	field: string;
+	field: JobField;
 	jobType: JobType;
 	requirements: string;
 	responsibilities: string;

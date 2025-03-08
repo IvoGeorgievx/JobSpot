@@ -1,11 +1,29 @@
-import { JobType } from '@prisma/client';
+import { JobField, JobType } from '@prisma/client';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
 const jobPostingSchema = z.object({
   title: z.string().describe('Job title'),
   description: z.string().describe('Job Description'),
-  field: z.string().describe('Relevant job field'),
+  field: z
+    .enum([
+      JobField.CONSTRUCTION_TRADES,
+      JobField.CREATIVE_DESIGN,
+      JobField.CUSTOMER_SERVICE_SUPPORT,
+      JobField.EDUCATION_TEACHING,
+      JobField.ENGINEERING,
+      JobField.FINANCE_ACCOUNTING,
+      JobField.HEALTHCARE_MEDICAL,
+      JobField.HOSPITALITY_TOURISM,
+      JobField.HUMAN_RESOURCES,
+      JobField.INFORMATION_TECHNOLOGY,
+      JobField.LEGAL_COMPLIANCE,
+      JobField.MARKETING_ADVERTISING,
+      JobField.RETAIL_ECOMMERCE,
+      JobField.SALES_BUSINESS_DEVELOPMENT,
+      JobField.TRANSPORTATION_LOGISTICS,
+    ])
+    .describe('Relevant job field'),
   jobType: z.enum([
     JobType.CONTRACT,
     JobType.FREELANCE,

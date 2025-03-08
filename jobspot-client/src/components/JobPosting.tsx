@@ -14,11 +14,12 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useJobPosting } from "../hooks/mutations/useCreateJobPosting";
 import { JobType } from "../types/job-type";
+import { JobField, jobFieldMap } from "../types/job-field-type";
 
 type FormData = {
 	title: string;
 	description: string;
-	field: string;
+	field: JobField;
 	responsibilities: string;
 	jobType: JobType;
 	requirements: string;
@@ -29,7 +30,11 @@ type FormData = {
 const schema = yup.object({
 	title: yup.string().required("Job title is required field."),
 	description: yup.string().required("Job description is required field."),
-	field: yup.string().required("Field of work is required."),
+	field: yup
+		.mixed<JobField>()
+		.oneOf(Object.values(JobField))
+		.required("Job type is required field.")
+		.required("Field of work is required."),
 	requirements: yup.string().required("Requirements is required field."),
 	responsibilities: yup
 		.string()
@@ -45,7 +50,7 @@ const schema = yup.object({
 const defaultValues: FormData = {
 	title: "",
 	description: "",
-	field: "",
+	field: JobField.INFORMATION_TECHNOLOGY,
 	responsibilities: "",
 	jobType: JobType.FULL_TIME,
 	requirements: "",
@@ -104,15 +109,21 @@ export const JobPosting = () => {
 					maxRows={6}
 					helperText={errors.errors.description?.message}
 				/>
-				<TextField
-					{...register("field")}
-					error={!!errors.errors.field}
-					id="field"
-					label="Field"
-					variant="standard"
-					placeholder="Enter job field"
-					helperText={errors.errors.field?.message}
-				/>
+				<FormControl variant="standard" fullWidth>
+					<InputLabel id="job-field">Job Type</InputLabel>
+					<Select
+						{...register("field")}
+						labelId="job-field"
+						id="job-field"
+						label="Job Field"
+					>
+						{Object.values(JobField).map((field) => (
+							<MenuItem key={field} value={field}>
+								{jobFieldMap[field]}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
 				<TextField
 					{...register("responsibilities")}
 					error={!!errors.errors.responsibilities}

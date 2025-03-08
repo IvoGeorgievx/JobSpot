@@ -14,8 +14,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { useAuth } from "../providers/AuthProvider";
 import { UserRole } from "../common/enums/user-role.enum";
+import { useAuth } from "../providers/AuthProvider";
 
 export const Header = () => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -46,7 +46,6 @@ export const Header = () => {
 		<AppBar position="sticky">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
-					<AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
 					<Typography
 						variant="h6"
 						noWrap

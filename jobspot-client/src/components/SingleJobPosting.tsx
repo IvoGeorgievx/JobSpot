@@ -1,5 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { JobPosting, jobTypeMap } from "../types/job-type";
+import { jobFieldMap } from "../types/job-field-type";
 
 interface SingleJobPostingProps {
 	jobPosting: JobPosting;
@@ -39,7 +40,7 @@ export const SingleJobPosting: React.FC<SingleJobPostingProps> = ({
 						fontSize: "14px",
 					}}
 				>
-					{jobPosting.field}
+					{jobFieldMap[jobPosting.field]}
 				</Typography>
 				<Typography
 					variant="body1"

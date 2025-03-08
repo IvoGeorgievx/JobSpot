@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useUpdateApplicantProfile } from "../hooks/mutations/useUpdateApplicantProfile";
 import { useAuth } from "../providers/AuthProvider";
+import { useGetUserJobApplications } from "../hooks/queries/useGetUserJobApplications";
 
 const defaultValues = {
 	fullName: "",
@@ -41,6 +42,9 @@ export const ApplicantProfile: React.FC = () => {
 		updateProfilePic: { mutate: profilePicMutate },
 		updateCv: { mutate: cvMutate, isSuccess: cvUploadSuccess },
 	} = useUpdateApplicantProfile();
+
+	const { data: applicaitons } = useGetUserJobApplications();
+	console.log(applicaitons);
 
 	const profilePicRef = useRef<HTMLInputElement>(null);
 	const cvRef = useRef<HTMLInputElement>(null);

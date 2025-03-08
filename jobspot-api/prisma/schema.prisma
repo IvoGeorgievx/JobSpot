@@ -22,6 +22,24 @@ enum JobType {
   FREELANCE
 }
 
+enum JobField {
+  INFORMATION_TECHNOLOGY
+  HEALTHCARE_MEDICAL
+  ENGINEERING
+  EDUCATION_TEACHING
+  FINANCE_ACCOUNTING
+  MARKETING_ADVERTISING
+  SALES_BUSINESS_DEVELOPMENT
+  CUSTOMER_SERVICE_SUPPORT
+  HOSPITALITY_TOURISM
+  CONSTRUCTION_TRADES
+  TRANSPORTATION_LOGISTICS
+  RETAIL_ECOMMERCE
+  LEGAL_COMPLIANCE
+  CREATIVE_DESIGN
+  HUMAN_RESOURCES
+}
+
 enum ApplicationStatus {
   APPLIED
   REVIEWED
@@ -54,7 +72,7 @@ model JobPosting {
   companyProfileId String
   title            String
   description      String
-  field            String
+  field            JobField
   jobType          JobType
   createdAt        DateTime         @default(now())
   requirements     String
