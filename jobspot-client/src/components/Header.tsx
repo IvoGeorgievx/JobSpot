@@ -50,7 +50,7 @@ export const Header = () => {
 						variant="h6"
 						noWrap
 						component="a"
-						href="/"
+						href={user?.role === UserRole.APPLICANT ? "/home/applicant" : "/"}
 						sx={{
 							mr: 2,
 							display: { xs: "none", md: "flex" },
@@ -195,6 +195,17 @@ export const Header = () => {
 										Profile
 									</Link>
 								</MenuItem>
+								{user && user.role === UserRole.APPLICANT && (
+									<MenuItem>
+										<Link
+											underline="none"
+											color="secondary"
+											href="profile/applications"
+										>
+											My Applications
+										</Link>
+									</MenuItem>
+								)}
 								{user && (
 									<MenuItem>
 										<Link

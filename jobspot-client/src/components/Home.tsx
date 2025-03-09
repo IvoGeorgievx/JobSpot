@@ -10,11 +10,19 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router";
 import hired from "../assets/images/hired.svg";
 import man from "../assets/images/man.svg";
 import work from "../assets/images/work.svg";
+import { UserRole } from "../common/enums/user-role.enum";
+import { useAuth } from "../providers/AuthProvider";
 
 export const Home = () => {
+	const { user } = useAuth();
+	const navigate = useNavigate();
+	if (user?.role === UserRole.APPLICANT) {
+		navigate("home/applicant", { replace: true });
+	}
 	return (
 		<Grid container spacing={2}>
 			<Grid

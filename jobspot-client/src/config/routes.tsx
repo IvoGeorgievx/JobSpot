@@ -10,19 +10,23 @@ import { Login } from "../components/Login";
 import { ProtectedRoutes } from "../components/ProtectedRoutes";
 import { Register } from "../components/Register";
 import { JobApplicants } from "../components/JobApplicants";
+import JobApplications from "../components/JobApplications";
+import ApplicantHome from "../components/ApplicantHome";
 
 export const routes: RouteObject[] = [
 	{
 		path: "",
-		element: <Home />,
+		element: <ProtectedRoutes allowedRoles={["guest"]} element={<Home />} />,
 	},
 	{
 		path: "register",
-		element: <Register />,
+		element: (
+			<ProtectedRoutes allowedRoles={["guest"]} element={<Register />} />
+		),
 	},
 	{
 		path: "login",
-		element: <Login />,
+		element: <ProtectedRoutes allowedRoles={["guest"]} element={<Login />} />,
 	},
 	{
 		path: "profile/applicant",
@@ -70,6 +74,24 @@ export const routes: RouteObject[] = [
 			<ProtectedRoutes
 				allowedRoles={[UserRole.COMPANY]}
 				element={<JobApplicants />}
+			/>
+		),
+	},
+	{
+		path: "profile/applications",
+		element: (
+			<ProtectedRoutes
+				allowedRoles={[UserRole.APPLICANT]}
+				element={<JobApplications />}
+			/>
+		),
+	},
+	{
+		path: "home/applicant",
+		element: (
+			<ProtectedRoutes
+				allowedRoles={[UserRole.APPLICANT]}
+				element={<ApplicantHome />}
 			/>
 		),
 	},

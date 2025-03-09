@@ -20,10 +20,9 @@ export const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
 		);
 	}
 
-	if (!user) {
-		return <Navigate to="/" replace />;
+	if (!user?.role && allowedRoles.includes("guest")) {
+		return element;
 	}
-
 	if (user?.role && allowedRoles.some((role) => role === user.role)) {
 		return element;
 		// maybe I should create not found page sometime

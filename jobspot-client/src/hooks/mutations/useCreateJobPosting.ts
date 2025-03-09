@@ -18,7 +18,6 @@ const newJobPosting = async (data: Partial<JobPosting>) => {
 };
 
 const editJobPosting = async (id: string, data: Partial<JobPosting>) => {
-	console.log(typeof data.salaryMin);
 	const token = localStorage.getItem("token");
 	if (token) {
 		const response = await axios.put<JobPosting>(

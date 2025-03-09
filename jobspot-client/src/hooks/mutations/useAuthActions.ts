@@ -52,7 +52,7 @@ export const useAuthActions = () => {
 		onSuccess: async (data) => {
 			localStorage.setItem("token", data.accessToken);
 			refetchUser(data.accessToken);
-			navigate("/");
+			navigate("/home/applicant");
 		},
 		onError: (err: AxiosError) => {
 			return err.response?.data;

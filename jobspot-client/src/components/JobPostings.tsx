@@ -93,7 +93,7 @@ export const JobPostings = () => {
 					Filters
 				</Typography>
 				<FormControl fullWidth>
-					<InputLabel id="job-field">Job Type</InputLabel>
+					<InputLabel id="job-field">Job Field</InputLabel>
 					<Select
 						labelId="job-field"
 						id="job-field"
