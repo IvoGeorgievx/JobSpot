@@ -12,6 +12,7 @@ import { Register } from "../components/Register";
 import { JobApplicants } from "../components/JobApplicants";
 import JobApplications from "../components/JobApplications";
 import ApplicantHome from "../components/ApplicantHome";
+import CompanyHome from "../components/CompanyHome";
 
 export const routes: RouteObject[] = [
 	{
@@ -92,6 +93,15 @@ export const routes: RouteObject[] = [
 			<ProtectedRoutes
 				allowedRoles={[UserRole.APPLICANT]}
 				element={<ApplicantHome />}
+			/>
+		),
+	},
+	{
+		path: "home/company",
+		element: (
+			<ProtectedRoutes
+				allowedRoles={[UserRole.COMPANY]}
+				element={<CompanyHome />}
 			/>
 		),
 	},

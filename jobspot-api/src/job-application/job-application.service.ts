@@ -63,8 +63,11 @@ export class JobApplicationService {
 
   async getJobApplicants(
     userId: string,
-    jobPostingId: string,
-  ): Promise<ApplicantProfile[]> {
+    jobPostingIds: string[],
+  ): Promise<{
+    applicants: ApplicantProfile[];
+    jobApplications: JobApplication[];
+  }> {
     const companyProfile = await this.prisma.companyProfile.findFirst({
       where: { userId },
     });
@@ -74,7 +77,7 @@ export class JobApplicationService {
       );
     const companyJobPostings = await this.prisma.jobPosting.findMany({
       where: {
-        id: jobPostingId,
+        id: { in: jobPostingIds },
         companyProfileId: companyProfile.id,
       },
     });
@@ -83,7 +86,7 @@ export class JobApplicationService {
         'No job postings related to this company found.',
       );
     const jobApplications = await this.prisma.jobApplication.findMany({
-      where: { jobPostingId },
+      where: { jobPostingId: { in: jobPostingIds } },
       include: { applicantProfile: true },
     });
 
@@ -91,7 +94,7 @@ export class JobApplicationService {
       (application) => application.applicantProfile,
     );
 
-    return applicants;
+    return { applicants, jobApplications };
   }
 
   async userAppliedForJob(

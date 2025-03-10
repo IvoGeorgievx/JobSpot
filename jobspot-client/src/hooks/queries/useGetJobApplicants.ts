@@ -4,21 +4,24 @@ import { useQuery } from "@tanstack/react-query";
 import { Applicant } from "../../types/applicant-type";
 import { useAuth } from "../../providers/AuthProvider";
 import { UserRole } from "../../common/enums/user-role.enum";
+import { JobApplication } from "../../types/job-application-type";
 
-const queryFn = async (jobPostingId: string) => {
+const queryFn = async (jobPostingIds: string[]) => {
 	const token = localStorage.getItem("token");
 	if (token) {
-		const response = await axios.get<Applicant[]>(
-			`${API_URL}/job-application/applicants`,
-			{
-				headers: { Authorization: `Bearer ${token}` },
-				params: {
-					jobPostingId,
-				},
-			}
-		);
+		const response = await axios.get<{
+			applicants: Applicant[];
+			jobApplications: JobApplication[];
+		}>(`${API_URL}/job-application/applicants`, {
+			headers: { Authorization: `Bearer ${token}` },
+			params: {
+				jobPostingIds,
+			},
+		});
 
-		return response.data;
+		const { applicants, jobApplications } = response.data;
+
+		return { applicants, jobApplications };
 	}
 };
 
@@ -46,9 +49,9 @@ export const useGetIfApplicantApplied = (jobId: string) => {
 	});
 };
 
-export const useGetJobApplicants = (jobPostingId: string) => {
+export const useGetJobApplicants = (jobPostingIds: string[]) => {
 	return useQuery({
-		queryKey: ["job-applicants", jobPostingId],
-		queryFn: () => queryFn(jobPostingId),
+		queryKey: ["job-applicants", jobPostingIds],
+		queryFn: () => queryFn(jobPostingIds),
 	});
 };

@@ -45,11 +45,11 @@ export class JobApplicationController {
   @Roles('company')
   @Get('applicants')
   getJobApplicants(
-    @Query('jobPostingId') jobPostingId: string,
+    @Query('jobPostingIds') jobPostingIds: string[],
     @Req() req: AuthenticatedRequest,
   ) {
     const userId = req.user.sub;
-    return this.jobApplicationService.getJobApplicants(userId, jobPostingId);
+    return this.jobApplicationService.getJobApplicants(userId, jobPostingIds);
   }
 
   @UseGuards(AuthGuard, RoleGuard)
