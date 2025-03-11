@@ -11,7 +11,7 @@ import { ProtectedRoutes } from "../components/ProtectedRoutes";
 import { Register } from "../components/Register";
 import { JobApplicants } from "../components/JobApplicants";
 import JobApplications from "../components/JobApplications";
-import ApplicantHome from "../components/ApplicantHome";
+import ApplicantHome from "../components/ApplicantDashboard/ApplicantHome";
 import CompanyHome from "../components/CompanyHome";
 
 export const routes: RouteObject[] = [
