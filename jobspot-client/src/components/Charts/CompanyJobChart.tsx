@@ -5,6 +5,7 @@ import {
 	CartesianGrid,
 	Legend,
 	ResponsiveContainer,
+	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
@@ -37,12 +38,17 @@ const CompanyJobChart: React.FC<CompanyJobChartProps> = ({
 	return (
 		<ResponsiveContainer width="50%" height="100%">
 			<BarChart data={chartData}>
-				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis dataKey="title" />
-				<YAxis />
-				{/* <Tooltip /> */}
-				<Legend />
-				<Bar dataKey="applicants" fill="#8884d8" barSize={100} />
+				<CartesianGrid strokeDasharray="3 3" stroke="#555" />
+				<XAxis dataKey="title" stroke="#FFF" />
+				<YAxis
+					stroke="#FFF"
+					type="number"
+					tickCount={6}
+					allowDecimals={false}
+				/>
+				<Tooltip />
+				<Legend wrapperStyle={{ color: "#FFF" }} />
+				<Bar dataKey="applicants" fill="#708090" barSize={100} />
 			</BarChart>
 		</ResponsiveContainer>
 	);

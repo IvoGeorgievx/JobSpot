@@ -12,7 +12,7 @@ import { Register } from "../components/Register";
 import { JobApplicants } from "../components/JobApplicants";
 import JobApplications from "../components/JobApplications";
 import ApplicantHome from "../components/ApplicantDashboard/ApplicantHome";
-import CompanyHome from "../components/CompanyHome";
+import CompanyHome from "../components/CompanyDashboard/CompanyHome";
 
 export const routes: RouteObject[] = [
 	{
