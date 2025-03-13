@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { useGetJobApplicants } from "../../hooks/queries/useGetJobApplicants";
 import { useGetJobPostings } from "../../hooks/queries/useGetJobPostings";
 import { Applicant } from "../../types/applicant-type";
-import { JobApplication } from "../../types/job-application-type";
+import {
+	ApplicationStatus,
+	JobApplication,
+} from "../../types/job-application-type";
 import CompanyJobChart from "../Charts/CompanyJobChart";
-import CompanyDashboardCard from "./CompanyDashboardCard";
+import DashboardCard from "../DashboardCard";
 import MotionNumbers from "../Theme/MotionNumbers";
 
 const CompanyHome = () => {
@@ -17,6 +20,10 @@ const CompanyHome = () => {
 
 	const companyJobPostingIds =
 		data?.data.map((jobPosting) => jobPosting.id) ?? [];
+
+	const reviewedApplications = jobApplications.filter(
+		(jobApplication) => jobApplication.status === ApplicationStatus.REVIEWED
+	);
 
 	const { data: jobData } = useGetJobApplicants(companyJobPostingIds);
 
@@ -37,14 +44,14 @@ const CompanyHome = () => {
 						justifyContent="center"
 						alignItems="center"
 					>
-						<CompanyDashboardCard
+						<DashboardCard
 							title="Total Jobs Posted"
 							background="linear-gradient(to bottom, #000000, #1E2528)"
 							value={
 								data?.data ? <MotionNumbers value={data.data.length} /> : 0
 							}
 						/>
-						<CompanyDashboardCard
+						<DashboardCard
 							title="Total Applicants"
 							background="linear-gradient(to bottom, #000000, #2C3A47)"
 							value={
@@ -55,10 +62,16 @@ const CompanyHome = () => {
 								)
 							}
 						/>
-						<CompanyDashboardCard
+						<DashboardCard
+							title="Reviewed Applications"
 							background="linear-gradient(to bottom, #000000, #38444D)"
-							value={5}
-							title="test t"
+							value={
+								jobApplications.length ? (
+									<MotionNumbers value={reviewedApplications.length} />
+								) : (
+									0
+								)
+							}
 						/>
 					</Stack>
 				</Container>

@@ -1,20 +1,12 @@
 import { Box, Container, Pagination, Stack, Typography } from "@mui/material";
-import {
-	animate,
-	AnimatePresence,
-	motion,
-	useMotionValue,
-	useTransform,
-} from "motion/react";
-import { useEffect, useState } from "react";
+import { AnimatePresence } from "motion/react";
+import { useState } from "react";
 import { useGetJobPostings } from "../hooks/queries/useGetJobPostings";
+import { jobFieldMap } from "../types/job-field-type";
 import { JobPosting, jobTypeMap } from "../types/job-type";
 import { CompanyPostingDetails } from "./CompanyPostingDetails";
-import { jobFieldMap } from "../types/job-field-type";
 
 export const CompanyPostings = () => {
-	const count = useMotionValue(0);
-	const rounded = useTransform(() => Math.round(count.get()));
 	const [page, setPage] = useState(1);
 	const pageSize = 3;
 	const {
@@ -23,17 +15,11 @@ export const CompanyPostings = () => {
 	const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
 
 	const jobPostings = data?.data;
-	const total = data?.total;
 
 	const onBack = (page: number) => {
 		setSelectedJob(null);
 		setPage(page);
 	};
-
-	useEffect(() => {
-		const controls = animate(count, total ?? 0, { duration: 1 });
-		return () => controls.stop();
-	}, [count, total]);
 
 	return (
 		<Container maxWidth="lg" sx={{ marginTop: "4rem", position: "relative" }}>
@@ -49,9 +35,6 @@ export const CompanyPostings = () => {
 					<>
 						<Typography variant="h2" textAlign="center" color="textDisabled">
 							Job Postings:
-							<motion.pre style={{ fontSize: 30, color: "#4ff0b7" }}>
-								{rounded}
-							</motion.pre>
 						</Typography>
 						<Stack my={2} gap={2} minHeight="450px">
 							{jobPostings?.map((jobPosting) => (

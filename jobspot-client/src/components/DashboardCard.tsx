@@ -6,7 +6,7 @@ interface CompanyDashboardCardProps {
 	value: React.ReactNode;
 }
 
-const CompanyDashboardCard: React.FC<CompanyDashboardCardProps> = ({
+const DashboardCard: React.FC<CompanyDashboardCardProps> = ({
 	title,
 	background,
 	value,
@@ -36,4 +36,4 @@ const CompanyDashboardCard: React.FC<CompanyDashboardCardProps> = ({
 	);
 };
 
-export default CompanyDashboardCard;
+export default DashboardCard;

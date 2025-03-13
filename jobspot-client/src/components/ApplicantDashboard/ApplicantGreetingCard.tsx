@@ -10,7 +10,7 @@ const ApplicantGreetingCard = () => {
 		username = profile.fullName;
 	}
 	return (
-		<Stack gap={2} height="322.5px">
+		<Stack gap={2} height={{ xs: "auto", md: "338.5px" }}>
 			<Typography variant="h4">
 				{username ? `Welcome Back, ${username}!` : "Welcome back!"}
 			</Typography>

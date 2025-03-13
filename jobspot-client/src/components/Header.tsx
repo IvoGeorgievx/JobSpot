@@ -16,17 +16,24 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { UserRole } from "../common/enums/user-role.enum";
 import { useAuth } from "../providers/AuthProvider";
+import { useNavigate } from "react-router";
 
 export const Header = () => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 	const { user, logout, loading } = useAuth();
+	const navigate = useNavigate();
 
 	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElNav(event.currentTarget);
 	};
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElUser(event.currentTarget);
+	};
+
+	const handleProfileClick = (route: string) => {
+		navigate(route);
+		setAnchorElUser(null);
 	};
 
 	const handleCloseNavMenu = () => {
@@ -50,7 +57,11 @@ export const Header = () => {
 						variant="h6"
 						noWrap
 						component="a"
-						href={user?.role === UserRole.APPLICANT ? "/home/applicant" : "/"}
+						href={
+							user?.role === UserRole.APPLICANT
+								? "/home/applicant"
+								: "/home/company"
+						}
 						sx={{
 							mr: 2,
 							display: { xs: "none", md: "flex" },
@@ -182,41 +193,25 @@ export const Header = () => {
 								open={Boolean(anchorElUser)}
 								onClose={handleCloseUserMenu}
 							>
-								<MenuItem>
-									<Link
-										href={
+								<MenuItem
+									onClick={() => {
+										handleProfileClick(
 											user.role === UserRole.APPLICANT
 												? "profile/applicant"
 												: "profile/company"
-										}
-										underline="none"
-										color="secondary"
-									>
-										Profile
-									</Link>
+										);
+									}}
+								>
+									Profile
 								</MenuItem>
 								{user && user.role === UserRole.APPLICANT && (
-									<MenuItem>
-										<Link
-											underline="none"
-											color="secondary"
-											href="profile/applications"
-										>
-											My Applications
-										</Link>
+									<MenuItem
+										onClick={() => handleProfileClick("profile/applications")}
+									>
+										My Applications
 									</MenuItem>
 								)}
-								{user && (
-									<MenuItem>
-										<Link
-											underline="none"
-											color="secondary"
-											onClick={handleLogout}
-										>
-											Logout
-										</Link>
-									</MenuItem>
-								)}
+								{user && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
 							</Menu>
 						</Box>
 					) : (

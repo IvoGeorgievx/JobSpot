@@ -1,3 +1,5 @@
+import { JobPosting } from "./job-type";
+
 export enum ApplicationStatus {
 	APPLIED = "APPLIED",
 	REVIEWED = "REVIEWED",
@@ -9,4 +11,5 @@ export interface JobApplication {
 	applicantProfileId: string;
 	jobPostingId: string;
 	status: ApplicationStatus;
+	jobPosting: JobPosting;
 }

@@ -18,27 +18,25 @@ const JobApplications = () => {
 			</Typography>
 			<Stack gap={2}>
 				{data?.map((application) => (
-					<>
-						<Stack
-							key={application.id}
-							direction="row"
-							justifyContent="space-between"
-							sx={{
-								borderRadius: "16px",
-								border: "1px solid #38444D",
-								padding: "16px",
-								cursor: "pointer",
-								transition: "background-color 0.2s ease",
-								"&:hover": { backgroundColor: "#252F36" },
-							}}
-						>
-							{application.id}
-							<Typography color={colorMap[application.status]}>
-								{application.status.charAt(0).toUpperCase() +
-									application.status.slice(1).toLocaleLowerCase()}
-							</Typography>
-						</Stack>
-					</>
+					<Stack
+						key={application.id}
+						direction="row"
+						justifyContent="space-between"
+						sx={{
+							borderRadius: "16px",
+							border: "1px solid #38444D",
+							padding: "16px",
+							cursor: "pointer",
+							transition: "background-color 0.2s ease",
+							"&:hover": { backgroundColor: "#252F36" },
+						}}
+					>
+						{application.jobPosting.title}
+						<Typography color={colorMap[application.status]}>
+							{application.status.charAt(0).toUpperCase() +
+								application.status.slice(1).toLocaleLowerCase()}
+						</Typography>
+					</Stack>
 				))}
 			</Stack>
 		</Container>

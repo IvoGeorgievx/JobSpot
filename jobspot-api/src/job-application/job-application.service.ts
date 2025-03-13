@@ -42,6 +42,7 @@ export class JobApplicationService {
     const applicantProfileId = await this.getUserApplicantProfile(userId);
     return await this.prisma.jobApplication.findMany({
       where: { applicantProfileId },
+      include: { jobPosting: true },
     });
   }
 

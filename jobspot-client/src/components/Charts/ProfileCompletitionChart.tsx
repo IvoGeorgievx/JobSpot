@@ -63,10 +63,11 @@ const ProfileCompletionChart: React.FC<ProfileCompletionChartProps> = ({
 			<Stack
 				p={2}
 				border="1px solid #38444D"
-				width={{ xs: "75%", md: "50%" }}
+				width={{ xs: "75%", md: "60%" }}
 				borderRadius="16px"
 				overflow="auto"
 				bgcolor={theme.palette.background.paper}
+				alignSelf="center"
 			>
 				<Typography textAlign="center" letterSpacing={1}>
 					Profile Completition
