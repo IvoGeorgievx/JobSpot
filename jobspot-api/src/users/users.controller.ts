@@ -78,7 +78,7 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   @Put('profile/update/cv')
-  @ApiOperation({ summary: 'User uploads profile picture' })
+  @ApiOperation({ summary: 'User uploads cv' })
   @ApiConsumes('multipart/form-data')
   updateApplicantCv(
     @Req() req: AuthenticatedRequest,

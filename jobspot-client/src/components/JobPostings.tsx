@@ -1,4 +1,5 @@
 import {
+	Button,
 	Container,
 	FormControl,
 	InputLabel,
@@ -17,7 +18,7 @@ import { JobField, jobFieldMap } from "../types/job-field-type";
 import { JobPosting } from "../types/job-type";
 import { JobPostingDrawer } from "./JobPostingDrawer";
 import { SingleJobPosting } from "./SingleJobPosting";
-
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { SelectChangeEvent } from "@mui/material";
 
 export const JobPostings = () => {
@@ -48,6 +49,8 @@ export const JobPostings = () => {
 	};
 
 	const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = Number(e.target.value);
+		if (value < 0) return;
 		setFilters((prevFilters) => ({
 			...prevFilters,
 			[e.target.name]: e.target.value,
@@ -67,6 +70,14 @@ export const JobPostings = () => {
 		}, 500),
 		[refetch]
 	);
+
+	const resetFilters = () => {
+		setFilters({
+			field: "",
+			salaryMin: 0,
+			salaryMax: 0,
+		});
+	};
 
 	useEffect(() => {
 		debouncedRefetch();
@@ -114,15 +125,30 @@ export const JobPostings = () => {
 					type="number"
 					label="Minimum Salary"
 					fullWidth
+					value={filters.salaryMin}
 					onChange={handleSalaryChange}
 				/>
 				<TextField
 					name="salaryMax"
 					type="number"
+					value={filters.salaryMax}
 					label="Maximum Salary"
 					fullWidth
 					onChange={handleSalaryChange}
 				/>
+				{(filters.field ||
+					filters.salaryMin !== 0 ||
+					filters.salaryMax !== 0) && (
+					<Button
+						sx={{ minWidth: "80px", height: "54px" }}
+						variant="contained"
+						onClick={resetFilters}
+						startIcon={<RestartAltIcon />}
+						color="warning"
+					>
+						Reset
+					</Button>
+				)}
 			</Stack>
 			<Stack gap={1} my={1} minHeight="430px">
 				{isLoading ? (

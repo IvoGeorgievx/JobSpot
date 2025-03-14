@@ -1,6 +1,7 @@
 import { Navigate } from "react-router";
 import { useAuth } from "../providers/AuthProvider";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { UserRole } from "../common/enums/user-role.enum";
 
 interface ProtectedRoutesProps {
 	element: React.ReactNode;
@@ -28,5 +29,10 @@ export const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
 		// maybe I should create not found page sometime
 	}
 
-	return <Navigate to="/" replace />;
+	return (
+		<Navigate
+			to={user?.role === UserRole.APPLICANT ? "home/applicant" : "home/company"}
+			replace
+		/>
+	);
 };
