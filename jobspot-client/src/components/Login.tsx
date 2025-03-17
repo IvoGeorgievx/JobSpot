@@ -9,11 +9,11 @@ import {
 	Stack,
 	TextField,
 	Typography,
-	useTheme,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useAuthActions } from "../hooks/mutations/useAuthActions";
+import { useNavigate } from "react-router";
 
 interface FormData {
 	email: string;
@@ -31,11 +31,8 @@ const schema = yup.object({
 });
 
 export const Login = () => {
-	const theme = useTheme();
-	const backgroundColor =
-		theme.palette.mode === "dark"
-			? "linear-gradient(to right, #333, #666)"
-			: "linear-gradient(to right, #567dab, #89b4d6)";
+	const navigate = useNavigate();
+
 	const { register, handleSubmit, formState } = useForm({
 		mode: "onBlur",
 		resolver: yupResolver(schema),
@@ -43,12 +40,16 @@ export const Login = () => {
 	});
 
 	const {
-		signIn: { mutate },
+		signIn: { mutate, isSuccess },
 	} = useAuthActions();
 
 	const onSubmit = (data: FormData) => {
 		mutate(data);
 	};
+
+	if (isSuccess) {
+		navigate("/");
+	}
 
 	return (
 		<Container
@@ -65,7 +66,7 @@ export const Login = () => {
 					minWidth: "25%",
 					boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
 					borderRadius: "16px",
-					background: backgroundColor,
+					background: "linear-gradient(to right, #333, #666)",
 				}}
 				padding={2}
 			>

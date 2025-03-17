@@ -3,7 +3,6 @@ import { useGetUserProfile } from "../../hooks/queries/useGetUserProfile";
 
 const ApplicantGreetingCard = () => {
 	const { data: profile } = useGetUserProfile();
-	console.log(profile);
 	let username;
 
 	if (profile && "fullName" in profile) {

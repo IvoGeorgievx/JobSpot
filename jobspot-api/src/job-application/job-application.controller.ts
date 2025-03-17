@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseArrayPipe,
   Post,
   Query,
   Req,
@@ -61,7 +62,11 @@ export class JobApplicationController {
     type: String,
   })
   getJobApplicants(
-    @Query('jobPostingIds') jobPostingIds: string[],
+    @Query(
+      'jobPostingIds',
+      new ParseArrayPipe({ items: String, separator: ',' }),
+    )
+    jobPostingIds: string[],
     @Req() req: AuthenticatedRequest,
   ) {
     const userId = req.user.sub;

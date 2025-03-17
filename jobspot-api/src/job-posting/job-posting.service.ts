@@ -9,6 +9,7 @@ import {
   PaginatedJobPostingResponseDto,
 } from './dto/job-posting.dto';
 import { JobField, JobPosting } from '@prisma/client';
+import { sub } from 'date-fns';
 
 @Injectable()
 export class JobPostingService {
@@ -34,8 +35,31 @@ export class JobPostingService {
     userId: string,
     page: number,
     pageSize: number,
+    period: 'all' | 'weekly' | 'monthly' | 'yearly',
   ): Promise<PaginatedJobPostingResponseDto> {
     const companyProfileId = await this.findUserAndRelatedProfile(userId);
+
+    const where: { companyProfileId: string; createdAt?: { gte: Date } } = {
+      companyProfileId,
+    };
+
+    if (period !== 'all') {
+      let createdAt: Date;
+      switch (period) {
+        case 'weekly':
+          createdAt = sub(new Date(), { weeks: 1 });
+          break;
+        case 'monthly':
+          createdAt = sub(new Date(), { months: 1 });
+          break;
+        case 'yearly':
+          createdAt = sub(new Date(), { years: 1 });
+          break;
+        default:
+          throw new BadRequestException('Invalid period provided.');
+      }
+      where.createdAt = { gte: createdAt };
+    }
 
     const skip = (page - 1) * pageSize;
 
@@ -43,14 +67,10 @@ export class JobPostingService {
       this.prisma.jobPosting.findMany({
         skip,
         take: pageSize,
-        where: {
-          companyProfileId,
-        },
+        where,
       }),
       this.prisma.jobPosting.count({
-        where: {
-          companyProfileId,
-        },
+        where,
       }),
     ]);
 

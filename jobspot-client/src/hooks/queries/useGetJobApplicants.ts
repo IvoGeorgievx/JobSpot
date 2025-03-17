@@ -15,7 +15,7 @@ const queryFn = async (jobPostingIds: string[]) => {
 		}>(`${API_URL}/job-application/applicants`, {
 			headers: { Authorization: `Bearer ${token}` },
 			params: {
-				jobPostingIds,
+				jobPostingIds: jobPostingIds.join(","),
 			},
 		});
 

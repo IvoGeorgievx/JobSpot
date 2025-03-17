@@ -36,8 +36,8 @@ const CompanyJobChart: React.FC<CompanyJobChartProps> = ({
 		});
 	}, [jobPostings, jobApplications]);
 	return (
-		<ResponsiveContainer width="50%" height="100%">
-			<BarChart data={chartData}>
+		<ResponsiveContainer width="100%" height="100%">
+			<BarChart data={chartData} margin={{ right: 30 }}>
 				<CartesianGrid strokeDasharray="3 3" stroke="#555" />
 				<XAxis dataKey="title" stroke="#FFF" />
 				<YAxis

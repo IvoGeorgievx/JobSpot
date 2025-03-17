@@ -38,9 +38,7 @@ export const useAuthActions = () => {
 	const signUp = useMutation({
 		mutationKey: ["register"],
 		mutationFn: register,
-		onSuccess: () => {
-			navigate("/");
-		},
+
 		onError: (err: AxiosError) => {
 			return err.response?.data;
 		},

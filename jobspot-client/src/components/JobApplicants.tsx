@@ -12,6 +12,8 @@ import { Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Worker } from "@react-pdf-viewer/core";
 import { useState } from "react";
+import DownloadIcon from "@mui/icons-material/Download";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { JobPosting } from "../types/job-type";
 
 interface JobApplicantsProps {
@@ -62,13 +64,24 @@ export const JobApplicants: React.FC<JobApplicantsProps> = ({
 								>
 									<Stack flex={1}>{applicant.fullName}</Stack>
 									{applicant.cvUrl ? (
-										<Button
-											onClick={() => handleOpenDialog(index)}
-											variant="contained"
-											sx={{ flex: 1 }}
-										>
-											View Applicant CV
-										</Button>
+										<>
+											<Button
+												href={applicant.cvUrl}
+												variant="contained"
+												sx={{ flex: 1 }}
+												startIcon={<DownloadIcon />}
+											>
+												Download CV
+											</Button>
+											<Button
+												onClick={() => handleOpenDialog(index)}
+												variant="contained"
+												sx={{ flex: 1 }}
+												startIcon={<VisibilityIcon />}
+											>
+												View Applicant CV
+											</Button>
+										</>
 									) : (
 										<Typography>Applicant have no CV attached.</Typography>
 									)}

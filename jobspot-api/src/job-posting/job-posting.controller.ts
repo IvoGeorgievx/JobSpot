@@ -68,9 +68,15 @@ export class JobPostingController {
     @Req() req: AuthenticatedRequest,
     @Query('page', ParseIntPipe) page: number = 1,
     @Query('pageSize', ParseIntPipe) pageSize: number = 5,
+    @Query('period') period: 'all' | 'weekly' | 'monthly' | 'yearly' = 'all',
   ): Promise<PaginatedJobPostingResponseDto> {
     const userId = req.user.sub;
-    return this.jobPostingService.getCompanyJobPostings(userId, page, pageSize);
+    return this.jobPostingService.getCompanyJobPostings(
+      userId,
+      page,
+      pageSize,
+      period,
+    );
   }
 
   @UseGuards(AuthGuard, RoleGuard)

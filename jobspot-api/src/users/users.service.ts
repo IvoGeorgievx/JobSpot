@@ -138,7 +138,6 @@ export class UsersService {
 
       if (!applicantProfile)
         throw new NotFoundException('No such profile found');
-      console.log(applicantProfile);
 
       return applicantProfile;
     }

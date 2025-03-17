@@ -4,6 +4,8 @@ JobSpot is a fullstack web application that helps applicants easily find and app
 
 Applicants can create profiles, submit applications, and track their progress throughout the hiring process.
 
+Companyies can create job postings, view candidates and their CV's and track their job posting statistics
+
 ## Table of Contents
 
 - [Features](#features)

@@ -76,7 +76,8 @@ export const CompanyPostingDetails = ({
 	const {
 		updateJobPosting: { mutate, isPending, isSuccess },
 	} = useJobPosting();
-	const { data: applicantData } = useGetJobApplicants(jobPosting.id);
+	const { data: applicantData } = useGetJobApplicants([jobPosting.id]);
+	console.log(applicantData?.applicants);
 	const [disableFields, setDisableFields] = useState(true);
 
 	const onFormSubmit = (data: FormData) => {
@@ -360,14 +361,17 @@ export const CompanyPostingDetails = ({
 										>
 											<Link
 												to="/job-applicants"
-												state={{ applicants: applicantData, jobPosting }}
+												state={{
+													applicants: applicantData?.applicants,
+													jobPosting,
+												}}
 												style={{ textDecoration: "underline" }}
 											>
 												Applicants:
 											</Link>
 										</Typography>
 										<Typography variant="h6" color="success">
-											{applicantData?.length ?? 0}
+											{applicantData?.applicants?.length ?? 0}
 										</Typography>
 									</Stack>
 								</Stack>

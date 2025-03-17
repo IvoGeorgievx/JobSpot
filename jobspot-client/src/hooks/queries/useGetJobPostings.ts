@@ -4,6 +4,7 @@ import { API_URL } from "../../common/constants/api";
 import { JobPosting } from "../../types/job-type";
 import { useAuth } from "../../providers/AuthProvider";
 import { UserRole } from "../../common/enums/user-role.enum";
+import { FilterPeriod } from "../../types/filter-period-type";
 
 interface Filters {
 	field?: string;
@@ -56,7 +57,11 @@ const fetchAllPostings = async (
 	}
 };
 
-const fetchCompanyPostings = async (page: number, pageSize: number) => {
+const fetchCompanyPostings = async (
+	page: number,
+	pageSize: number,
+	period: "all" | "weekly" | "monthly" | "yearly" = "all"
+) => {
 	const token = localStorage.getItem("token");
 	if (token) {
 		try {
@@ -71,6 +76,7 @@ const fetchCompanyPostings = async (page: number, pageSize: number) => {
 				params: {
 					page,
 					pageSize,
+					period,
 				},
 			});
 			return response.data;
@@ -106,7 +112,8 @@ const fetchSingleJobPosting = async (jobPostingId: string) => {
 export const useGetJobPostings = (
 	page: number,
 	pageSize: number,
-	filters: Filters = {}
+	filters: Filters = {},
+	period?: FilterPeriod
 ) => {
 	const { user } = useAuth();
 	const allJobPostings = useQuery({
@@ -116,8 +123,8 @@ export const useGetJobPostings = (
 	});
 
 	const companyJobPostings = useQuery({
-		queryKey: ["company-jobs", page, pageSize],
-		queryFn: () => fetchCompanyPostings(page, pageSize),
+		queryKey: ["company-jobs", page, pageSize, period],
+		queryFn: () => fetchCompanyPostings(page, pageSize, period),
 		refetchOnWindowFocus: false,
 		enabled: user?.role === UserRole.COMPANY,
 	});
